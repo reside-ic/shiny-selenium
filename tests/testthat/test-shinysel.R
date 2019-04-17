@@ -5,3 +5,10 @@ test_that("ui generation changes title", {
   tags <- dat[[3]]
   expect_equal(tags[[1]]$children[[1]][[2]]$children[[1]], "string")
 })
+
+
+test_that("test shiny application", {
+  dr <- selenium_driver()
+  ## Dummy test:
+  expect_true(TRUE)
+})
