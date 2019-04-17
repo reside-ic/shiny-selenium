@@ -4,5 +4,10 @@ language: R
 cache: packages
 r_packages: covr
 
+services: docker
+
+before_script:
+  - ./scripts/selenium-start
+
 after_success:
   - Rscript -e 'covr::codecov()'
