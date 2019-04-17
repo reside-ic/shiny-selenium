@@ -26,28 +26,13 @@ pkgdown:
 	${RSCRIPT} -e "library(methods); pkgdown::build_site()"
 
 website: pkgdown
-	./update_web.sh
-
-README.md: README.Rmd
-	Rscript -e 'library(methods); devtools::load_all(); knitr::knit("README.Rmd")'
-	sed -i.bak 's/[[:space:]]*$$//' $@
-	rm -f $@.bak
+	./scripts/update_web.sh
 
 clean:
 	rm -f src/*.o src/*.so src/*.dll
 
 coverage:
 	Rscript -e 'covr::shine(covr::package_coverage(quiet=FALSE))'
-
-vignettes/odin.Rmd: vignettes/src/odin.R
-	${RSCRIPT} -e 'library(sowsear); sowsear("$<", output="$@")'
-vignettes/discrete.Rmd: vignettes/src/discrete.R
-	${RSCRIPT} -e 'library(sowsear); sowsear("$<", output="$@")'
-vignettes: vignettes/odin.Rmd vignettes/discrete.Rmd
-	${RSCRIPT} -e 'library(methods); devtools::build_vignettes()'
-
-ir_reference:
-	${RSCRIPT} scripts/ir-build.R
 
 # No real targets!
 .PHONY: all test document install vignettes build
