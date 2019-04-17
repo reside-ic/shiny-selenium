@@ -1,3 +1,7 @@
+##' Demo shiny app
+##' @title Demo shiny app
+##' @param title A title string to include in the application
+##' @export
 shinysel <- function(title) {
   shiny::shinyApp(shinysel_ui(title), shinysel_server)
 }
@@ -18,10 +22,10 @@ shinysel_ui <- function(title) {
 shinysel_server <- function(input, output, session) {
   shiny::observeEvent(
     input$go,
-    output$plot <- renderPlot({
+    output$plot <- shiny::renderPlot({
       n <- input$obs
-      x <- runif(n)
-      y <- runif(n)
-      plot(x, y)
+      x <- stats::runif(n)
+      y <- stats::runif(n)
+      graphics::plot(x, y)
     }))
 }
