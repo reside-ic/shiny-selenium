@@ -9,6 +9,10 @@ test_that("ui generation changes title", {
 
 test_that("test shiny application", {
   dr <- selenium_driver()
-  ## Dummy test:
-  expect_true(TRUE)
+
+  app <- launch_shinysel("mytitle", 8005)
+  dr$navigate(app$url)
+
+  title <- dr$getTitle()[[1]]
+  expect_equal(title, "mytitle")
 })
