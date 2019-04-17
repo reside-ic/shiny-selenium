@@ -1,0 +1,14 @@
+Package: shinysel
+Title: What the Package Does (One Line, Title Case)
+Version: 0.1.0
+Authors@R:
+    person(given = "Rich",
+           family = "FitzJohn",
+           role = c("aut", "cre"),
+           email = "r.fitzjohn@imperial.ac.uk")
+Description: Demonstrates getting shiny, selenium and travis working together.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports:
+  shiny
