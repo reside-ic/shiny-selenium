@@ -5,15 +5,24 @@
 ## gracefully if it is not possible
 selenium_driver <- function() {
   testthat::skip_on_cran()
-  testthat::skip_if_not_installed("RSelenium")
-  ## No point running a test if we can't launch the application either
-  testthat::skip_if_not_installed("callr")
+  required <- identical(Sys.getenv("SHINYSEL_REQUIRE_SELENIUM", ""), "true")
+  if (!required) {
+    testthat::skip_if_not_installed("RSelenium")
+    ## No point running a test if we can't launch the application either
+    testthat::skip_if_not_installed("callr")
+  }
   if (is.null(.selenium$driver)) {
     .selenium$driver <- tryCatch({
       dr <- RSelenium::remoteDriver()
       dr$open(silent = TRUE)
       dr
-    }, error = function(e) testthat::skip(e$message))
+    }, error = function(e) {
+      if (required) {
+        stop(e)
+      } else {
+        testthat::skip(e$message)
+      }
+    })
     .selenium$port <- counter(8000)
   }
   .selenium$driver

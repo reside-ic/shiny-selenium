@@ -4,6 +4,9 @@ language: R
 cache: packages
 r_packages: covr
 
+env:
+  - SHINYSEL_REQUIRE_SELENIUM=true
+
 services: docker
 
 before_script:
