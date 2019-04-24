@@ -10,4 +10,5 @@ before_script:
   - ./scripts/selenium-start
 
 after_success:
+  - cat shinysel.Rcheck/tests/testthat.Rout
   - Rscript -e 'covr::codecov()'
