@@ -8,6 +8,7 @@ services: docker
 
 before_script:
   - ./scripts/selenium-start
+  - R CMD INSTALL .
 
 after_success:
   - cat shinysel.Rcheck/tests/testthat.Rout
