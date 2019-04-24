@@ -14,6 +14,7 @@ selenium_driver <- function() {
       dr$open(silent = TRUE)
       dr
     }, error = function(e) testthat::skip(e$message))
+    .selenium$port <- counter(8000)
   }
   .selenium$driver
 }
@@ -21,7 +22,8 @@ selenium_driver <- function() {
 
 ## This version is totally built around our demo app - we'll need to
 ## generalise this later.
-launch_shinysel <- function(title, port) {
+launch_shinysel <- function(title) {
+  port <- .selenium$port()
   args <- list(title, port)
 
   process <- callr::r_bg(function(title, port) {
@@ -75,4 +77,13 @@ retry_until_no_error <- function(f, ...) {
 retry_until_server_responsive <- function(url, ...) {
   retry_until_no_error(function() readLines(url),
                        "shiny server is responsive")
+}
+
+
+counter <- function(start) {
+  x <- as.integer(start)
+  function() {
+    x <<- start + 1L
+    x
+  }
 }

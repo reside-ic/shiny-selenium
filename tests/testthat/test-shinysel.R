@@ -10,7 +10,7 @@ test_that("ui generation changes title", {
 test_that("test shiny application", {
   dr <- selenium_driver()
 
-  app <- launch_shinysel("mytitle", 8005)
+  app <- launch_shinysel("mytitle")
   dr$navigate(app$url)
 
   title <- dr$getTitle()[[1]]
