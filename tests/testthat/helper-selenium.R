@@ -23,7 +23,7 @@ selenium_driver <- function() {
         testthat::skip(e$message)
       }
     })
-    .selenium$port <- counter(8000)
+    .selenium$port <- free_port(8000)
   }
   .selenium$driver
 }
@@ -89,10 +89,38 @@ retry_until_server_responsive <- function(url, ...) {
 }
 
 
-counter <- function(start) {
-  x <- as.integer(start)
+free_port <- function(start, max_tries = 20) {
+  force(start)
+  force(max_tries)
   function() {
-    x <<- start + 1L
-    x
+    port <- find_free_port(start, max_tries)
+    start <<- start + 1
+    port
   }
+}
+
+
+find_free_port <- function(start, max_tries = 20) {
+  port <- seq(start, length.out = max_tries)
+  for (p in port) {
+    if (check_port(p)) {
+      return(p)
+    }
+  }
+  stop(sprintf("Did not find a free port between %d..%d",
+               min(port), max(port)),
+       call. = FALSE)
+}
+
+
+check_port <- function(port) {
+  timeout <- 0.1
+  con <- tryCatch(suppressWarnings(socketConnection(
+    "localhost", port = port, timeout = timeout, open = "r")),
+    error = function(e) NULL)
+  if (is.null(con)) {
+    return(TRUE)
+  }
+  close(con)
+  FALSE
 }
